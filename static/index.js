@@ -47,7 +47,7 @@ data = data.sort(function(a, b) {
 });
 
 var margin = {top: 20, right: 20, bottom: 100, left: 170};
-var width = 800 - margin.left - margin.right;
+var width = 650 - margin.left - margin.right;
 var height = 570 - margin.top - margin.bottom;
 
 var yRange = [];
@@ -63,7 +63,7 @@ var x = d3.scaleLinear()
   .range([0, height])
   .domain([0, d3.max(data, get_percent)]);
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#chart").append("svg")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -89,6 +89,9 @@ svg.append("text")
             "translate(" + (0.5 * (width  - margin.left - margin.right)) + " ," + (height + margin.top + 20) + ")")
       .style("text-anchor", "middle")
       .text("Computadores por cada 100 niños");
+
+svg.append("text")
+      .attr("transform", "translate(500, 0)")
 
 svg.append("g")
   .call(d3.axisLeft(y));
