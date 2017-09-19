@@ -69,6 +69,9 @@ var svg = d3.select("#chart").append("svg")
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var div = d3.select("#chart").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
 svg.selectAll(".bar")
   .data(data)
@@ -78,8 +81,20 @@ svg.selectAll(".bar")
   .attr("height", 14)
   .attr("y", function(d) { return y(d["DEPARTAMENTO"]) - 7; })
   .attr("width", function(d) { return x(get_percent(d)); })
-  .style("fill", function(d) { return regionColors[d["REGION"]]; });
-
+  .style("fill", function(d) { return regionColors[d["REGION"]]; })
+  .on("mouseover", function(d) {
+    div.transition()
+      .duration(200)
+      .style("opacity", .9);
+    div.html("<div>Región: <span style=\"color:" + regionColors[d["REGION"]] + "\">" + d["REGION"] + "</span></div><div>Total niños: " + d["POBLACION"]+ "</div><div>Total computadores: " + d["TOTAL"] + "</div>")
+      .style("left", (d3.event.pageX) + "px")
+      .style("top", (d3.event.pageY - 28) + "px");
+  })
+  .on("mouseout", function(d) {
+    div.transition()
+      .duration(500)
+      .style("opacity", 0);
+  });
 svg.append("g")
   .call(d3.axisBottom(x))
   .attr("transform", "translate(0," + height + ")");
